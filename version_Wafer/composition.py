@@ -106,6 +106,24 @@ class ShowEDS(Frame):
         TernaryPlot(w, df)
 
 
+
+    def on_showDistribution(self, data):
+        if self.distB.cget('relief') == 'raised':
+            self.distB.config(relief = 'sunken')
+            #add distribution function to all the axes
+            self.dist = Distribution(ax = self.plotFrame.ax, canvas = self.plotFrame.canvas, data_good =self.data_good, ele_name = self.ele_name,  deviation =self.deviation*1.8)
+            for i,ax in self.plotFrame.ax.items():
+                self.plotFrame.canvas.get(i).figure.canvas.mpl_disconnect(self.cid.get(i))
+                self.cid_dist[i] = self.plotFrame.canvas.get(i).figure.canvas.mpl_connect('button_press_event', self.dist.onclick_distribution)
+        elif self.distB.cget('relief') == 'sunken':
+            self.distB_to_raise()
+
+    def distB_to_raise(self):
+            self.distB.config(relief = 'raised')
+            for i,ax in self.plotFrame.ax.items():
+                self.plotFrame.canvas.get(i).figure.canvas.mpl_disconnect(self.cid_dist.get(i))
+                self.cid[i] = self.plotFrame.canvas.get(i).figure.canvas.mpl_connect('button_press_event', self.onclick)
+
     def on_showStage(self):
         if self.stageB.cget('relief') == 'raised':
             self.stageB.config(relief = 'sunken')
@@ -127,26 +145,7 @@ class ShowEDS(Frame):
                 ax.set_ylim(self.original_axisRangey[0], self.original_axisRangey[1])
                 self.margin_plot.get(i).remove()
                 self.plotFrame.canvas.get(i).draw()
-
-
-    def on_showDistribution(self, data):
-        if self.distB.cget('relief') == 'raised':
-            self.distB.config(relief = 'sunken')
-            #add distribution function to all the axes
-            self.dist = Distribution(ax = self.plotFrame.ax, canvas = self.plotFrame.canvas, data_good =self.data_good, ele_name = self.ele_name,  deviation =self.deviation*1.8)
-            for i,ax in self.plotFrame.ax.items():
-                self.plotFrame.canvas.get(i).figure.canvas.mpl_disconnect(self.cid.get(i))
-                self.cid_dist[i] = self.plotFrame.canvas.get(i).figure.canvas.mpl_connect('button_press_event', self.dist.onclick_distribution)
-        elif self.distB.cget('relief') == 'sunken':
-            self.distB_to_raise()
-
-    def distB_to_raise(self):
-            self.distB.config(relief = 'raised')
-            for i,ax in self.plotFrame.ax.items():
-                self.plotFrame.canvas.get(i).figure.canvas.mpl_disconnect(self.cid_dist.get(i))
-                self.cid[i] = self.plotFrame.canvas.get(i).figure.canvas.mpl_connect('button_press_event', self.onclick)
-
-
+                
     def on_multiSel(self, data):
         if self.multiSelB.cget('relief') == 'sunken':
             self.raise_multiSelB()

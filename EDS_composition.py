@@ -13,10 +13,6 @@ class EDX_composition(Frame):
 
     def __init__(self, master):
         super().__init__(master)
-
-        # filemenu.add_command(label="Exit", command=root.quit)
-
-
         notebook = ttk.Notebook(master)
         EDS_wafer = EDS_Main(master)
         notebook.add(EDS_wafer,text='Whole wafer')
@@ -31,6 +27,9 @@ class EDX_composition(Frame):
         frame = ttk.Frame(self.notebook)
         self.notebook.add(frame,text=title)
         self.notebook.pack()
+
+
+
 
 
 
