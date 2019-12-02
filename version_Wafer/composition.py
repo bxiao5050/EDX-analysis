@@ -87,6 +87,13 @@ class ShowEDS(Frame):
 
         self.updateCanvas(data)
 
+    def show_ternary(self):
+        df = self.data_good['data'].copy()
+        df.columns = self.ele_name
+        w = Toplevel()
+        w.title('ternary diagram')
+        TernaryPlot(w, df)
+
     def on_find_composition(self):
         w = Toplevel()
         w.title('search from given composition')
@@ -97,14 +104,6 @@ class ShowEDS(Frame):
         w.title('pie chart')
         showPiechart = PieChart(w, self.getExportedData())
         showPiechart.pack()
-
-    def show_ternary(self):
-        df = self.data_good['data'].copy()
-        df.columns = self.ele_name
-        w = Toplevel()
-        w.title('ternary diagram')
-        TernaryPlot(w, df)
-
 
 
     def on_showDistribution(self, data):
@@ -123,6 +122,20 @@ class ShowEDS(Frame):
             for i,ax in self.plotFrame.ax.items():
                 self.plotFrame.canvas.get(i).figure.canvas.mpl_disconnect(self.cid_dist.get(i))
                 self.cid[i] = self.plotFrame.canvas.get(i).figure.canvas.mpl_connect('button_press_event', self.onclick)
+
+    def on_multiSel(self, data):
+        if self.multiSelB.cget('relief') == 'sunken':
+            self.raise_multiSelB()
+        elif self.multiSelB.cget('relief') == 'raised':
+            self.multiSelB.config(relief = 'sunken')
+            self.delB.config(state = 'normal')
+            self.plotFrame.deleteHighlight_Normal()
+
+    def raise_multiSelB(self):
+            self.multiSelB.config(relief = 'raised')
+            self.plotFrame.deleteHighlight()
+            self.clickedRow = []
+            self.delB.config(state = 'disabled')
 
     def on_showStage(self):
         if self.stageB.cget('relief') == 'raised':
@@ -146,21 +159,6 @@ class ShowEDS(Frame):
                 self.margin_plot.get(i).remove()
                 self.plotFrame.canvas.get(i).draw()
                 
-    def on_multiSel(self, data):
-        if self.multiSelB.cget('relief') == 'sunken':
-            self.raise_multiSelB()
-        elif self.multiSelB.cget('relief') == 'raised':
-            self.multiSelB.config(relief = 'sunken')
-            self.delB.config(state = 'normal')
-            self.plotFrame.deleteHighlight_Normal()
-
-    def raise_multiSelB(self):
-            self.multiSelB.config(relief = 'raised')
-            self.plotFrame.deleteHighlight()
-            self.clickedRow = []
-            self.delB.config(state = 'disabled')
-
-
     def updateCanvas(self, data):
         #devide data into three types: 1. row containing '-', 2. without '-' (good data), 3 surround (on margin)
         data_empty, self.data_good, data_margin = self.divideData(data, self.ele_index)
