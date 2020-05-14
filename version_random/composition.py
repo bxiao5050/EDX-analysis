@@ -69,6 +69,22 @@ class ShowEDS(Frame):
             Label(inf.viewPort, text = mean).grid(row = totalRowN+4, column = j+1)
 
 
+
+
+    def divideData(self, data, ele_index):
+        data_empty = {'x': [], 'y': []} # empty data, contain only x, y
+        data_margin = {'x': [], 'y': []} # empty data, contain only x, y
+        data_good = {'rowName': [], 'x': [], 'y': [], 'data': pd.DataFrame()}  # row containing '-' data_good{'Spectrum 1 {1}'} = [x, y, [ele1, ele2...]]
+        for index, row in data.iterrows():
+            if '--' in row['In stats.']:
+                data_empty['x'].append(row[2])
+                data_empty['y'].append(row[3])
+            else:
+                data_good['rowName'].append(row[0])
+                data_good['x'].append(row[2])
+                data_good['y'].append(row[3])
+                data_good['data'] = data_good['data'].append([self.normalize(ele_index, row)], ignore_index = True)
+        return data_empty, data_good
     def normalize(self,ele_index, row):
         #1. summ
         summ = 0
@@ -85,22 +101,6 @@ class ShowEDS(Frame):
                 else:
                     norm.append(0)
         return norm
-
-    def divideData(self, data, ele_index):
-        data_empty = {'x': [], 'y': []} # empty data, contain only x, y
-        data_margin = {'x': [], 'y': []} # empty data, contain only x, y
-        data_good = {'rowName': [], 'x': [], 'y': [], 'data': pd.DataFrame()}  # row containing '-' data_good{'Spectrum 1 {1}'} = [x, y, [ele1, ele2...]]
-        for index, row in data.iterrows():
-            if '--' in row['In stats.']:
-                data_empty['x'].append(row[2])
-                data_empty['y'].append(row[3])
-            else:
-                data_good['rowName'].append(row[0])
-                data_good['x'].append(row[2])
-                data_good['y'].append(row[3])
-                data_good['data'] = data_good['data'].append([self.normalize(ele_index, row)], ignore_index = True)
-        return data_empty, data_good
-
 # check buttons
 class Checkbar(Frame):
    def __init__(self, parent=None, picks=[], side=LEFT, anchor=W):
