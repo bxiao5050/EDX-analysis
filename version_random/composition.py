@@ -101,19 +101,6 @@ class ShowEDS(Frame):
                 else:
                     norm.append(0)
         return norm
-# check buttons
-class Checkbar(Frame):
-   def __init__(self, parent=None, picks=[], side=LEFT, anchor=W):
-      Frame.__init__(self, parent)
-      self.vars = []
-      for pick in picks:
-         var = IntVar()
-         var.set(1)
-         chk = Checkbutton(self, text=pick, variable=var)
-         chk.pack(side=side, anchor=anchor, expand=YES)
-         self.vars.append(var)
-   def state(self):
-      return map((lambda var: var.get()), self.vars)
 
 
 class ImportData(LabelFrame):
@@ -153,6 +140,19 @@ class ImportData(LabelFrame):
         self.result.pack(side = 'bottom', fill="both", expand=True, pady = (15, 0))
 
 
+# check buttons
+class Checkbar(Frame):
+   def __init__(self, parent=None, picks=[], side=LEFT, anchor=W):
+      Frame.__init__(self, parent)
+      self.vars = []
+      for pick in picks:
+         var = IntVar()
+         var.set(1)
+         chk = Checkbutton(self, text=pick, variable=var)
+         chk.pack(side=side, anchor=anchor, expand=YES)
+         self.vars.append(var)
+   def state(self):
+      return map((lambda var: var.get()), self.vars)
 
 
 
