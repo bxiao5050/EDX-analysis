@@ -70,7 +70,6 @@ class ShowEDS(Frame):
 
 
 
-
     def divideData(self, data, ele_index):
         data_empty = {'x': [], 'y': []} # empty data, contain only x, y
         data_margin = {'x': [], 'y': []} # empty data, contain only x, y
@@ -85,6 +84,9 @@ class ShowEDS(Frame):
                 data_good['y'].append(row[3])
                 data_good['data'] = data_good['data'].append([self.normalize(ele_index, row)], ignore_index = True)
         return data_empty, data_good
+
+
+
     def normalize(self,ele_index, row):
         #1. summ
         summ = 0
@@ -101,6 +103,7 @@ class ShowEDS(Frame):
                 else:
                     norm.append(0)
         return norm
+
 
 
 class ImportData(LabelFrame):
@@ -140,6 +143,7 @@ class ImportData(LabelFrame):
         self.result.pack(side = 'bottom', fill="both", expand=True, pady = (15, 0))
 
 
+
 # check buttons
 class Checkbar(Frame):
    def __init__(self, parent=None, picks=[], side=LEFT, anchor=W):
@@ -153,7 +157,6 @@ class Checkbar(Frame):
          self.vars.append(var)
    def state(self):
       return map((lambda var: var.get()), self.vars)
-
 
 
 class ScrollFrame(Frame):

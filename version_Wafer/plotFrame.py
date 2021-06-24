@@ -48,13 +48,6 @@ class PlotFrame(Frame):
         self.canvas[num] = FigureCanvasTkAgg(self.f.get(num), master = self)
         # self.canvas.get(num).figure.canvas.mpl_connect('button_press_event', self.onclick)
         return self.canvas.get(num)
-        
-    def plotHighlight(self, x, y):
-        self.highlight[self.highlightN] = {}
-        for i, ax in self.ax.items():
-            self.highlight[self.highlightN][i], = ax.plot(x,y,marker='o',linestyle='--',color='b',linewidth=2,markerfacecolor='white',markeredgecolor='red',markeredgewidth=1,markersize=6)
-            self.canvas.get(i).draw()
-        self.highlightN += 1
 
     def onclick(self, event):
         click = event.xdata, event.ydata
@@ -62,6 +55,12 @@ class PlotFrame(Frame):
             print('x = {}, y = {}'.format(*click))
             # coords.append(click)
 
+    def plotHighlight(self, x, y):
+        self.highlight[self.highlightN] = {}
+        for i, ax in self.ax.items():
+            self.highlight[self.highlightN][i], = ax.plot(x,y,marker='o',linestyle='--',color='b',linewidth=2,markerfacecolor='white',markeredgecolor='red',markeredgewidth=1,markersize=6)
+            self.canvas.get(i).draw()
+        self.highlightN += 1
 
     def deleteHighlight(self):
         self.highlightN = 0

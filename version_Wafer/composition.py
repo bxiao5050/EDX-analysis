@@ -87,13 +87,6 @@ class ShowEDS(Frame):
 
         self.updateCanvas(data)
 
-    def show_ternary(self):
-        df = self.data_good['data'].copy()
-        df.columns = self.ele_name
-        w = Toplevel()
-        w.title('ternary diagram')
-        TernaryPlot(w, df)
-
     def on_find_composition(self):
         w = Toplevel()
         w.title('search from given composition')
@@ -105,37 +98,13 @@ class ShowEDS(Frame):
         showPiechart = PieChart(w, self.getExportedData())
         showPiechart.pack()
 
+    def show_ternary(self):
+        df = self.data_good['data'].copy()
+        df.columns = self.ele_name
+        w = Toplevel()
+        w.title('ternary diagram')
+        TernaryPlot(w, df)
 
-    def on_showDistribution(self, data):
-        if self.distB.cget('relief') == 'raised':
-            self.distB.config(relief = 'sunken')
-            #add distribution function to all the axes
-            self.dist = Distribution(ax = self.plotFrame.ax, canvas = self.plotFrame.canvas, data_good =self.data_good, ele_name = self.ele_name,  deviation =self.deviation*1.8)
-            for i,ax in self.plotFrame.ax.items():
-                self.plotFrame.canvas.get(i).figure.canvas.mpl_disconnect(self.cid.get(i))
-                self.cid_dist[i] = self.plotFrame.canvas.get(i).figure.canvas.mpl_connect('button_press_event', self.dist.onclick_distribution)
-        elif self.distB.cget('relief') == 'sunken':
-            self.distB_to_raise()
-
-    def distB_to_raise(self):
-            self.distB.config(relief = 'raised')
-            for i,ax in self.plotFrame.ax.items():
-                self.plotFrame.canvas.get(i).figure.canvas.mpl_disconnect(self.cid_dist.get(i))
-                self.cid[i] = self.plotFrame.canvas.get(i).figure.canvas.mpl_connect('button_press_event', self.onclick)
-
-    def on_multiSel(self, data):
-        if self.multiSelB.cget('relief') == 'sunken':
-            self.raise_multiSelB()
-        elif self.multiSelB.cget('relief') == 'raised':
-            self.multiSelB.config(relief = 'sunken')
-            self.delB.config(state = 'normal')
-            self.plotFrame.deleteHighlight_Normal()
-
-    def raise_multiSelB(self):
-            self.multiSelB.config(relief = 'raised')
-            self.plotFrame.deleteHighlight()
-            self.clickedRow = []
-            self.delB.config(state = 'disabled')
 
     def on_showStage(self):
         if self.stageB.cget('relief') == 'raised':
@@ -158,7 +127,41 @@ class ShowEDS(Frame):
                 ax.set_ylim(self.original_axisRangey[0], self.original_axisRangey[1])
                 self.margin_plot.get(i).remove()
                 self.plotFrame.canvas.get(i).draw()
-                
+
+
+    def on_showDistribution(self, data):
+        if self.distB.cget('relief') == 'raised':
+            self.distB.config(relief = 'sunken')
+            #add distribution function to all the axes
+            self.dist = Distribution(ax = self.plotFrame.ax, canvas = self.plotFrame.canvas, data_good =self.data_good, ele_name = self.ele_name,  deviation =self.deviation*1.8)
+            for i,ax in self.plotFrame.ax.items():
+                self.plotFrame.canvas.get(i).figure.canvas.mpl_disconnect(self.cid.get(i))
+                self.cid_dist[i] = self.plotFrame.canvas.get(i).figure.canvas.mpl_connect('button_press_event', self.dist.onclick_distribution)
+        elif self.distB.cget('relief') == 'sunken':
+            self.distB_to_raise()
+
+    def distB_to_raise(self):
+            self.distB.config(relief = 'raised')
+            for i,ax in self.plotFrame.ax.items():
+                self.plotFrame.canvas.get(i).figure.canvas.mpl_disconnect(self.cid_dist.get(i))
+                self.cid[i] = self.plotFrame.canvas.get(i).figure.canvas.mpl_connect('button_press_event', self.onclick)
+
+
+    def on_multiSel(self, data):
+        if self.multiSelB.cget('relief') == 'sunken':
+            self.raise_multiSelB()
+        elif self.multiSelB.cget('relief') == 'raised':
+            self.multiSelB.config(relief = 'sunken')
+            self.delB.config(state = 'normal')
+            self.plotFrame.deleteHighlight_Normal()
+
+    def raise_multiSelB(self):
+            self.multiSelB.config(relief = 'raised')
+            self.plotFrame.deleteHighlight()
+            self.clickedRow = []
+            self.delB.config(state = 'disabled')
+
+
     def updateCanvas(self, data):
         #devide data into three types: 1. row containing '-', 2. without '-' (good data), 3 surround (on margin)
         data_empty, self.data_good, data_margin = self.divideData(data, self.ele_index)
@@ -352,6 +355,7 @@ class ChooseEle(Frame):
                         lines += line.rstrip() + '\n'
                 fh.close()
                 self.data = pd.read_csv(StringIO(lines), sep = '\t')
+                self.coords_420(self.data) # convert the coords to stardard
 
             # self.data = pd.read_csv('191017-K2-1_EDX.txt', '\t')
                 self.elements = [ele for ele in self.data.columns[4:]]
@@ -368,6 +372,14 @@ class ChooseEle(Frame):
             w = Toplevel()
             w.title(path)
             ShowEDS(w, self.data, self.ele_index, self.ele_name).pack()
+
+        # convert the coords to standard 420 coords if there are 420 rows
+        def coords_420(self, data):
+            coords420 = pd.read_csv('coords_420.txt', '\t', header = 0)
+
+            if len(data.index) == 420:
+                data.iloc[:,2] = coords420['x']
+                data.iloc[:,3] = coords420['y']
 
 
 
