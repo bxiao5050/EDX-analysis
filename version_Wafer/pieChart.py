@@ -76,6 +76,8 @@ class PieChart(Frame):
 
         self.drawPiechart()
 
+
+
     def drawPiechart(self):
         insetsize = 5.2
         #draw piechart
@@ -84,9 +86,9 @@ class PieChart(Frame):
         colorlist = cm.Set3(np.linspace(0, 1, len(elements)))
         #piechar legend/ target position
         self.pie_setting = Pie_target_positions(self.right_f, labels = elements, colors = colorlist)
-        self.pie_setting.pack(anchor = 'n', padx = (5,5))
-        self.pie_setting.config(text = 'set target positions')
-        Button(self.right_f, text = 'apply', fg = 'red', command = self.on_pie_setting).pack(anchor = 'e', pady = (5,5), padx = (5,5))
+        # self.pie_setting.pack(anchor = 'n', padx = (5,5))
+        # self.pie_setting.config(text = 'set target positions')
+        # Button(self.right_f, text = 'apply', fg = 'red', command = self.on_pie_setting).pack(anchor = 'e', pady = (5,5), padx = (5,5))
 
         # infomaiton panel
         self.ele_l = {} # ele name and the corresponding values

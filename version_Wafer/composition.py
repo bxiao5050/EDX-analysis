@@ -15,6 +15,8 @@ try:
    from version_Wafer.pieChart import PieChart
    # from version_Wafer.search import Search_composition
    from version_Wafer.Search_composition import Search_composition
+   from version_Wafer.publication_main_panel import Publication_main_panel
+
 
 
 except :
@@ -25,6 +27,7 @@ except :
    from pieChart import PieChart
    # from search import Search_composition
    from Search_composition import Search_composition
+   from publication_main_panel import Publication_main_panel
 # from version_Wafer.plotFrame import PlotFrame
 # from version_Wafer.choosefiles import OpenCSV
 
@@ -51,6 +54,7 @@ class ShowEDS(Frame):
         diagram_f = LabelFrame(top_frame, text = 'show diagram')
         save_f = LabelFrame(top_frame, text = 'save as')
         search_f = LabelFrame(top_frame, text = 'search')
+        pub_f = LabelFrame(top_frame, text = 'fig setting')
 
         self.inf.grid(row= 0, column = 0,  padx= (10,20), sticky = 'nw')
         delete_f.grid(row= 0, column = 1,  padx= (5,5), sticky = 'nw')
@@ -58,10 +62,12 @@ class ShowEDS(Frame):
         diagram_f.grid(row= 0, column = 3,  padx= (5,5), sticky = 'nw')
         save_f.grid(row= 0, column = 4,  padx= (5,5), sticky = 'nw')
         search_f.grid(row= 0, column = 5,  padx= (5,5), sticky = 'nw')
+        pub_f.grid(row= 0, column = 6,  padx= (5,5), sticky = 'nw')
 
         Button(save_f, text = '.csv', fg = 'blue',width = 7, command = self.on_save).pack()
         Button(save_f, text = 'image', fg = 'blue',width = 7, command = self.on_saveJPG).pack()
         Button(search_f, text = 'find composition',width = 14, command = self.on_find_composition).pack()
+        Button(pub_f, text = 'publication',width = 14, command = self.on_publication).pack()
 
         self.multiSelB = Button(delete_f, text = 'select', fg = 'red',width = 9, command = lambda data = data: self.on_multiSel(data))
         self.delB = Button(delete_f, text = 'delete ', state = 'disabled', fg = 'red',width = 8, command = lambda data = data: self.on_delete(data))
@@ -86,6 +92,16 @@ class ShowEDS(Frame):
             self.cid[i] = canvas.figure.canvas.mpl_connect('button_press_event', self.onclick)
 
         self.updateCanvas(data)
+
+    def on_publication(self):
+        w = Toplevel()
+        w.title('figure for publication')
+        data = self.data_good['data'].copy()
+        data.columns = self.ele_name
+        data.insert(0, 'x', self.data_good['x'], False )
+        data.insert(1, 'y', self.data_good['y'], False )
+        Publication_main_panel(w, data).pack(fill = 'both', expand = True)
+
 
     def on_find_composition(self):
         w = Toplevel()

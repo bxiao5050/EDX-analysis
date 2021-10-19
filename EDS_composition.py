@@ -43,21 +43,21 @@ def main():
 
 
 
-    with open('qixian') as fp:
-        lines = fp.readlines()
-        for line in lines:
-            if 'qixian' in line:
-                return
+    # with open('qixian') as fp:
+    #     lines = fp.readlines()
+    #     for line in lines:
+    #         if 'qixian' in line:
+    #             return
 
 
-    with open('qixian', 'r+') as fp:
-        lines = fp.readlines()
-        for line in lines:
-            if '..' in line:
-                # print(line.strip())
-                if datetime.today().date()> datetime.strptime(line.strip().replace('..',''), '%y.%m.%d').date():
-                    fp.write('qixian')
-                    return
+    # with open('qixian', 'r+') as fp:
+    #     lines = fp.readlines()
+    #     for line in lines:
+    #         if '..' in line:
+    #             # print(line.strip())
+    #             if datetime.today().date()> datetime.strptime(line.strip().replace('..',''), '%y.%m.%d').date():
+    #                 fp.write('qixian')
+    #                 return
 
 
     # menu = Menu(root)
