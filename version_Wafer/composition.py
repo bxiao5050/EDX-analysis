@@ -194,7 +194,15 @@ class ShowEDS(Frame):
             title = '{} ({} - {}%)'.format(self.ele_name[i], min(c),max(c))
             self.plotFrame.plotScatter(i, x, y, c, marker = 's', title = title,
                 x_empty = x_empty, y_empty = y_empty, x_surround = x_surround, y_surround = y_surround)
-
+        if self.distB.cget('relief') == 'raised':
+            self.distB.config(relief = 'sunken')
+            #add distribution function to all the axes
+            self.dist = Distribution(ax = self.plotFrame.ax, canvas = self.plotFrame.canvas, data_good =self.data_good, ele_name = self.ele_name,  deviation =self.deviation*1.8)
+            for i,ax in self.plotFrame.ax.items():
+                self.plotFrame.canvas.get(i).figure.canvas.mpl_disconnect(self.cid.get(i))
+                self.cid_dist[i] = self.plotFrame.canvas.get(i).figure.canvas.mpl_connect('button_press_event', self.dist.onclick_distribution)
+        elif self.distB.cget('relief') == 'sunken':
+            self.distB_to_raise()
     def on_delete(self, data):
         for clickedR in self.clickedRow:
             data.iat[data.index[data.iloc[:,0] == clickedR[0]].tolist()[0], 1] = '--'
@@ -317,7 +325,25 @@ class ShowEDS(Frame):
         margin.append((38, 46, 24, 28))
         margin.append((43, 46, 20, 24.4))
         margin.append((43, 46, 16, 20))
+        
+        click = event.xdata, event.ydata
+        flag = False
+        if None not in click : # clicking outside the plot area produces a coordinate of None, so we filter those out.
+            # print('x = {}, y = {}'.format(*click))
 
+            try:
+                values, specName, clickedR, flag = self.getRow(click[0], click[1])
+                text = specName + '\n\n' + '              '.join(self.ele_name) + '\n' + '           '.join([str(v) for v in values] )
+                self.inf.config(text = text)
+                if self.multiSelB.cget('relief') == 'raised':
+                    self.plotFrame.plotHighlight_Normal(clickedR[2], clickedR[3])
+                #for delete
+                elif flag and (self.multiSelB.cget('relief') == 'sunken'):
+                    self.clickedRow.append(clickedR)
+                    self.plotFrame.plotHighlight(clickedR[2], clickedR[3])
+                #for distribution
+            except TypeError:
+                pass
         for v in margin:
             if x>v[0] and x<v[1] and y>v[2] and y<v[3]:
                 flag = True
