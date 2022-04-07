@@ -12,10 +12,16 @@ try:
    from version_Wafer.choosefiles import OpenCSV
    from version_Wafer.distribution import Distribution
    from version_Wafer.ternaryPlot import TernaryPlot
+   from version_Wafer.ternaryPlot_quasi import TernaryPlot_quasi
+   from version_Wafer.quaternaryPlot import QuaternaryPlot
+   from version_Wafer.quaternaryPlot_quasi import QuaternaryPlot_quasi
+   from version_Wafer.multidimensionPlot import MultidimensionPlot
+   from version_Wafer.multidimensionPlot_3d import MultidimensionPlot_3d
    from version_Wafer.pieChart import PieChart
    # from version_Wafer.search import Search_composition
    from version_Wafer.Search_composition import Search_composition
    from version_Wafer.publication_main_panel import Publication_main_panel
+
 
 
 
@@ -24,6 +30,11 @@ except :
    from choosefiles import OpenCSV
    from distribution import Distribution
    from ternaryPlot import TernaryPlot
+   from ternaryPlot_quasi import TernaryPlot_quasi
+   from quaternaryPlot import QuaternaryPlot
+   from quaternaryPlot_quasi import QuaternaryPlot_quasi
+   from multidimensionPlot import MultidimensionPlot
+   from multidimensionPlot_3d import MultidimensionPlot_3d
    from pieChart import PieChart
    # from search import Search_composition
    from Search_composition import Search_composition
@@ -64,23 +75,28 @@ class ShowEDS(Frame):
         search_f.grid(row= 0, column = 5,  padx= (5,5), sticky = 'nw')
         pub_f.grid(row= 0, column = 6,  padx= (5,5), sticky = 'nw')
 
-        Button(save_f, text = '.csv', fg = 'blue',width = 7, command = self.on_save).pack()
-        Button(save_f, text = 'image', fg = 'blue',width = 7, command = self.on_saveJPG).pack()
-        Button(search_f, text = 'find composition',width = 14, command = self.on_find_composition).pack()
-        Button(pub_f, text = 'publication',width = 14, command = self.on_publication).pack()
+        Button(save_f, text = '.csv', fg = 'blue',width = 6, command = self.on_save).pack()
+        Button(save_f, text = 'image', fg = 'blue',width = 6, command = self.on_saveJPG).pack()
+        Button(search_f, text = 'find composition',width = 13, command = self.on_find_composition).pack()
+        Button(pub_f, text = 'publication',width = 10, command = self.on_publication).pack()
 
-        self.multiSelB = Button(delete_f, text = 'select', fg = 'red',width = 9, command = lambda data = data: self.on_multiSel(data))
-        self.delB = Button(delete_f, text = 'delete ', state = 'disabled', fg = 'red',width = 8, command = lambda data = data: self.on_delete(data))
+        self.multiSelB = Button(delete_f, text = 'select', fg = 'red',width = 6, command = lambda data = data: self.on_multiSel(data))
+        self.delB = Button(delete_f, text = 'delete ', state = 'disabled', fg = 'red',width = 6, command = lambda data = data: self.on_delete(data))
         self.multiSelB.pack(side = 'left', padx = (2,2))
         self.delB.pack(side = 'right')
 
-        self.stageB = Button(dist_f, text = 'show in stage',width = 12, command = self.on_showStage)
-        self.distB = Button(dist_f, text = 'distribution',width = 12,state = 'disabled', command = lambda data = data:self.on_showDistribution(data))
+        self.stageB = Button(dist_f, text = 'show in stage',width = 10, command = self.on_showStage)
+        self.distB = Button(dist_f, text = 'distribution',width = 10,state = 'disabled', command = lambda data = data:self.on_showDistribution(data))
         self.stageB.pack(side = 'left', padx = (2,2))
         self.distB.pack(side = 'right', padx = (2,2))
 
-        Button(diagram_f, text = 'ternary',width = 7, command = self.show_ternary).pack()
-        Button(diagram_f, text = 'piechart',width = 7, command = self.show_piechart).pack()
+        Button(diagram_f, text = 'ternary',width = 9, command = self.show_ternary).grid(row = 0, column = 0)
+        Button(diagram_f, text = 'quasi ternary',width = 13, command = self.show_ternary_quasi).grid(row = 0, column = 1)
+        Button(diagram_f, text = 'quaternary',width = 9, command = self.show_quaternary).grid(row = 1, column = 0)
+        Button(diagram_f, text = 'quasi quaternary',width = 13, command = self.show_quaternary_quasi).grid(row = 1, column = 1)
+        Button(diagram_f, text = 'multidimension (2D)',width = 17, command = self.show_multidimension_diagram).grid(row = 0, column = 2)
+        Button(diagram_f, text = 'multidimension (3D)',width = 17, command = self.show_multidimension_diagram_3D).grid(row = 1, column = 2)
+        Button(diagram_f, text = 'piechart',width = 7, command = self.show_piechart, fg = 'green').grid(row = 0, column = 3)
 
         # plotFrame = PlotFrame(self, totalNum = 1)
         self.plotFrame = PlotFrame(self, totalNum = len(ele_name))
@@ -118,9 +134,43 @@ class ShowEDS(Frame):
         df = self.data_good['data'].copy()
         df.columns = self.ele_name
         w = Toplevel()
-        w.title('ternary diagram')
+        w.title('ternary diagram (select 3 elements)')
         TernaryPlot(w, df)
 
+    def show_ternary_quasi(self):
+        df = self.data_good['data'].copy()
+        df.columns = self.ele_name
+        w = Toplevel()
+        w.title('quasi ternary diagram')
+        TernaryPlot_quasi(w, df)
+
+    def show_quaternary(self):
+        df = self.data_good['data'].copy()
+        df.columns = self.ele_name
+        w = Toplevel()
+        w.title('quaternary diagram (select 4 elements)')
+        QuaternaryPlot(w, df)
+
+    def show_quaternary_quasi(self):
+        df = self.data_good['data'].copy()
+        df.columns = self.ele_name
+        w = Toplevel()
+        w.title('quasi quaternary diagram')
+        QuaternaryPlot_quasi(w, df)
+
+    def show_multidimension_diagram(self):
+        df = self.data_good['data'].copy()
+        df.columns = self.ele_name
+        w = Toplevel()
+        w.title('multidimension diagram 2D')
+        MultidimensionPlot(w, df)
+
+    def show_multidimension_diagram_3D(self):
+        df = self.data_good['data'].copy()
+        df.columns = self.ele_name
+        w = Toplevel()
+        w.title('multidimension diagram 3D')
+        MultidimensionPlot_3d(w, df)
 
     def on_showStage(self):
         if self.stageB.cget('relief') == 'raised':
@@ -194,15 +244,7 @@ class ShowEDS(Frame):
             title = '{} ({} - {}%)'.format(self.ele_name[i], min(c),max(c))
             self.plotFrame.plotScatter(i, x, y, c, marker = 's', title = title,
                 x_empty = x_empty, y_empty = y_empty, x_surround = x_surround, y_surround = y_surround)
-        if self.distB.cget('relief') == 'raised':
-            self.distB.config(relief = 'sunken')
-            #add distribution function to all the axes
-            self.dist = Distribution(ax = self.plotFrame.ax, canvas = self.plotFrame.canvas, data_good =self.data_good, ele_name = self.ele_name,  deviation =self.deviation*1.8)
-            for i,ax in self.plotFrame.ax.items():
-                self.plotFrame.canvas.get(i).figure.canvas.mpl_disconnect(self.cid.get(i))
-                self.cid_dist[i] = self.plotFrame.canvas.get(i).figure.canvas.mpl_connect('button_press_event', self.dist.onclick_distribution)
-        elif self.distB.cget('relief') == 'sunken':
-            self.distB_to_raise()
+
     def on_delete(self, data):
         for clickedR in self.clickedRow:
             data.iat[data.index[data.iloc[:,0] == clickedR[0]].tolist()[0], 1] = '--'
@@ -325,25 +367,7 @@ class ShowEDS(Frame):
         margin.append((38, 46, 24, 28))
         margin.append((43, 46, 20, 24.4))
         margin.append((43, 46, 16, 20))
-        
-        click = event.xdata, event.ydata
-        flag = False
-        if None not in click : # clicking outside the plot area produces a coordinate of None, so we filter those out.
-            # print('x = {}, y = {}'.format(*click))
 
-            try:
-                values, specName, clickedR, flag = self.getRow(click[0], click[1])
-                text = specName + '\n\n' + '              '.join(self.ele_name) + '\n' + '           '.join([str(v) for v in values] )
-                self.inf.config(text = text)
-                if self.multiSelB.cget('relief') == 'raised':
-                    self.plotFrame.plotHighlight_Normal(clickedR[2], clickedR[3])
-                #for delete
-                elif flag and (self.multiSelB.cget('relief') == 'sunken'):
-                    self.clickedRow.append(clickedR)
-                    self.plotFrame.plotHighlight(clickedR[2], clickedR[3])
-                #for distribution
-            except TypeError:
-                pass
         for v in margin:
             if x>v[0] and x<v[1] and y>v[2] and y<v[3]:
                 flag = True

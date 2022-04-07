@@ -24,7 +24,7 @@ class EDX_composition(Frame):
 
         EDS_fromText = TextBox(master)
         notebook.add(EDS_fromText,text='from text')
-        notebook.pack()
+        notebook.pack(fill = 'both', expand = True)
 
 
     def add_tab(self,title, f):

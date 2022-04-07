@@ -90,6 +90,8 @@ class TernaryPlot(Frame):
         rightLabel = self.ele_right.get()
         bottomLabel = self.ele_bottom.get()
         points = self.normalization(self.df[[bottomLabel, rightLabel, leftLabel]].values)
+        # print(self.df[[bottomLabel, rightLabel, leftLabel]].values)
+        # print(points)
         # print(points)
         self.myPlot(points, leftLabel = leftLabel, rightLabel = rightLabel, bottomLabel = bottomLabel)
 
@@ -143,7 +145,7 @@ class TernaryPlot(Frame):
 
 def main():
     root = Tk()
-    d = {'Ni': (22, 23, 56), 'Co': (3, 40, 67), 'Cu': (30, 48, 57)}
+    d = {'Ni': (22, 23, 56, 22), 'Co': (3, 40, 67, 33), 'Cu': (30, 48, 57,55)}
     df = pd.DataFrame(data = d)
     app = TernaryPlot(root, df)
 
