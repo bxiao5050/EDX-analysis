@@ -12,22 +12,18 @@ EDX composition tool is a software for analysis of Energy Dispersive Spectroscop
 
 ### Screenshots
 
-<p align = "center">
+<div align = "center">
   <img align = "center" width = "600" src = "/assets/image1.gif" title = "Dynamically show elements for the most accurate and efficient analysis by click">
-
-    
+<p align = "center">Dynamically show elements for the most accurate and efficient analysis by click</p> <br>
     <img align = "center" width = "600" src = "/assets/image2.png"/>
-        <p align = "center"> Dfferent visualization modes to perform point sampling quickly click</p>
-        
-    <img align = "center" width = "600" src = "/assets/image3.gif"/>
-        <p align = "center"> Resize and arrange data windows according to requirements</p>
-    
-    <img align = "center" width = "600" src = "/assets/image4.png"/>
-        <p align = "center"> Acquire and report data with as little as one mouse click</p>
-        
+        <p align = "center"> Dfferent visualization modes to perform point sampling quickly click</p><br>     
+    <img align = "center" width = "400" src = "/assets/image3.gif"/>
+        <p align = "center"> Resize and arrange data windows according to requirements</p><br>
+    <img align = "center" width = "300" src = "/assets/image4.png"/>
+        <p align = "center"> Acquire and report data with as little as one mouse click</p><br>
     <img align = "center" width = "600" src = "/assets/image5.png"/>
-        <p align = "center"> Project tree storage for seamless management of all data click</p>
-</p>
+        <p align = "center"> Project tree storage for seamless management of all data click</p><br>
+</div>
 
 
 ## Python dependencies
