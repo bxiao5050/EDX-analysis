@@ -1,5 +1,5 @@
 # EDX-composition
-A tool for fast analysis of EDX library data
+A tool for fast analysis of EDX library data.
 
 <p align="center">
     <a href="https://ruhr-uni-bochum.sciebo.de/s/kKlMF7rXFwJeYIr" target="_blank">
@@ -8,7 +8,7 @@ A tool for fast analysis of EDX library data
 </p>
 
 ## Overview
-EDX composition tool is a software for analysis of Energy Dispersive Spectroscopy (EDS) data and the compositional characterization of materials. It allows high-quality, accurate results and increased productivity with its easy to use interface, live-time graphical display. 
+EDX composition tool is a software for analysis of Energy Dispersive Spectroscopy (EDS) data and the compositional characterization of materials. It is a convenient and straightforward application with advanced features. It allows high-quality, accurate results and increased productivity with its easy to use interface, live-time graphical display. 
 
 ### Screenshots
 
